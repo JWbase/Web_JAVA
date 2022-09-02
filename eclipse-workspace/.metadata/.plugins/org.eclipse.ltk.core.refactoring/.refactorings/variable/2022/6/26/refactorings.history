@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;kh.java.func.Varialbe&apos; to &apos;Variable&apos;&#x0D;&#x0A;- Original project: &apos;variable&apos;&#x0D;&#x0A;- Original element: &apos;kh.java.func.Varialbe&apos;&#x0D;&#x0A;- Renamed element: &apos;kh.java.func.Variable&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Varialbe&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;kh.java.func{Varialbe.java[Varialbe" matchStrategy="1" name="Variable" qualified="false" references="true" similarDeclarations="false" stamp="1655786923746" textual="false" version="1.0"/>
+</session>

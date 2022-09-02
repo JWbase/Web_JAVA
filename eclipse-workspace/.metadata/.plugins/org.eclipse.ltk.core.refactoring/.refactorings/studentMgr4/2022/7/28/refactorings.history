@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;kr.or.student.view.Student&apos; to &apos;StudentView&apos;&#x0D;&#x0A;- Original project: &apos;studentMgr4&apos;&#x0D;&#x0A;- Original element: &apos;kr.or.student.view.Student&apos;&#x0D;&#x0A;- Renamed element: &apos;kr.or.student.view.StudentView&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Student&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;kr.or.student.view{Student.java[Student" matchStrategy="1" name="StudentView" qualified="false" references="true" similarDeclarations="false" stamp="1657257327356" textual="false" version="1.0"/>
+</session>

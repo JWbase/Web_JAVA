@@ -1,0 +1,163 @@
+package kh.or.iei.member.view;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import kh.or.iei.member.model.vo.Board;
+import kh.or.iei.member.model.vo.Member;
+
+public class MemberView {
+
+	private Scanner sc;
+
+	public MemberView() {
+		super();
+		sc = new Scanner(System.in);
+	}
+
+	public int showMenu() {
+		System.out.println("========== KH커뮤니티 ==========");
+		System.out.println("1. 로그인하기");
+		System.out.println("2. 회원가입");
+		System.out.println("3. 아이디찾기");
+		System.out.println("0. 프로그램 종료");
+		System.out.print("선택 > ");
+		int sel = sc.nextInt();
+		return sel;
+	}
+
+	public String getId() {
+		System.out.println("========== 회원가입 ==========");
+		System.out.print("ID입력 : ");
+		String memberId = sc.next();
+		return memberId;
+	}
+
+	public void dupId() {
+		System.out.println("중복된 아이디입니다. 새로운 아이디를 입력하세요.");
+	}
+
+	public Member getMember() {
+		Member m = new Member();
+		System.out.print("PW입력 : ");
+		m.setMemberPw(sc.next());
+		System.out.print("이름 입력 : ");
+		m.setMemberName(sc.next());
+		System.out.print("전화번호 입력(ex.01011112222) : ");
+		m.setMemberPhone(sc.next());
+		return m;
+	}
+
+	public void successInsertMember() {
+		System.out.println("회원가입 성공");
+	}
+
+	public void failInsertMember() {
+		System.out.println("회원가입 실패");
+	}
+
+	public Member loginMenu() {
+		Member m = new Member();
+		System.out.println("========== 로그인 ==========");
+		System.out.print("ID 입력 : ");
+		m.setMemberId(sc.next());
+		System.out.print("PW 입력 : ");
+		m.setMemberPw(sc.next());
+		return m;
+	}
+
+	public String getName() {
+		System.out.println("========== 아이디 찾기 ==========");
+		System.out.print("이름 입력 : ");
+		String memberName = sc.next();
+		return memberName;
+	}
+
+	public String getPhone() {
+		System.out.print("전화번호 입력 : ");
+		String memberPhone = sc.next();
+		return memberPhone;
+	}
+
+	public void printMemberId(ArrayList<Member> list) {
+		for (Member m : list) {
+			System.out.println("아이디는 [" + m.getMemberId() + "] 입니다.");
+		}
+	}
+
+	public void noPrintId() {
+		System.out.println("일치하는 정보가 없습니다.");
+	}
+
+	public void loginFail() {
+		System.out.println("아이디 또는 비밀번호를 확인하세요");
+	}
+
+	public void loginSuccess() {
+		System.out.println("로그인 성공");
+	}
+
+	public int loginSuccessMenu() {
+		System.out.println("========== KH커뮤니티 ==========");
+		System.out.println("1. 게시물 목록 보기");
+		System.out.println("2. 게시물 상세 보기");
+		System.out.println("3. 게시물 등록");
+		System.out.println("4. 게시물 수정");
+		System.out.println("5. 게시물 삭제");
+		System.out.println("6. 내 정보 보기");
+		System.out.println("7. 내 정보 변경");
+		System.out.println("8. 회원 탈퇴");
+		System.out.println("0. 로그아웃");
+		System.out.print("선택 > ");
+		int sel = sc.nextInt();
+		return sel;
+	}
+
+	public Board writeMemo() {
+		Board board = new Board();
+		System.out.print("제목 입력 : ");
+		sc.nextLine();
+		board.setBoarTitle(sc.nextLine());
+		System.out.print("내용 입력 : ");
+		board.setBoardContent(sc.nextLine());
+
+		return board;
+	}
+
+	public void successWrite() {
+		System.out.println("게시글 등록 성공!!");
+	}
+
+	public void failWrite() {
+		System.out.println("게시글 등록 실패!!");
+	}
+
+	public void printIndexMemo(ArrayList<Board> list, Member login) {
+		System.out.println("========== 게시물 목록 ==========");
+		System.out.println(b.getBoardNo() + "\t" + b.getBoarTitle() + "\t" + login.getMemberName() + "\t"
+				+ b.getReadCount() + "\t" + b.getWriteDate());
+	}
+
+	public int getBoardNum() {
+		System.out.print("게시물 번호 입력 : ");
+		int boardNum = sc.nextInt();
+		return boardNum;
+	}
+
+	public void printDetailMemo(Board bo) {
+		System.out.println("========== 게시글 정보 ==========");
+		System.out.println("게시물 번호 : " + bo.getBoardNo());
+		System.out.println("게시물 제목 : " + bo.getBoarTitle());
+		System.out.println("게시물 내용 : " + bo.getBoardContent());
+		System.out.println("게시물 작성자 : " + bo.getMemberName());
+		System.out.println("게시물 조회수 : " + bo.getReadCount());
+		System.out.println("게시물 작성일 : " + bo.getWriteDate());
+
+	}
+
+	public void failPrintDetailMemo() {
+		System.out.println("게시글을 찾을 수 없습니다.");
+
+	}
+
+}
