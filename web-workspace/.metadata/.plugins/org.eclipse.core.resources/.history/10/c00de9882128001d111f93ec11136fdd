@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>아이디로 회원 조회</h1>
+	<hr>
+	<form action="/searchId.do" method="get">
+		<input type="text" name="memberId" placeholder="아이디입력">
+		<input type="text" value="아이디조회">
+	</form>
+</body>
+</html>

@@ -1,0 +1,5 @@
+package ko.or.iei.member.vo;
+
+public class Member {
+
+}

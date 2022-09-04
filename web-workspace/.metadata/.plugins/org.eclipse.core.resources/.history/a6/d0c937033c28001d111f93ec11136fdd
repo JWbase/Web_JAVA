@@ -1,0 +1,33 @@
+<%@page import="ko.or.iei.member.service.MemberService"%>
+<%@page import="ko.or.iei.member.vo.Member"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%
+// 1.인코딩
+request.setCharacterEncoding("utf-8");
+// 2. 값추출
+String memberId = request.getParameter("memberId");
+String memberPw = request.getParameter("memberPw");
+String memberName = request.getParameter("memberName");
+String memberPhone = request.getParameter("memberPhone");
+String memberAddr = request.getParameter("memberAddr");
+Member m = new Member();
+m.setMemberId(memberId);
+m.setMemberId(memberPw);
+m.setMemberId(memberName);
+m.setMemberId(memberPhone);
+m.setMemberId(memberAddr);
+// 3. 비즈니스로직
+MemberService service = new MemberService();
+int result = service.insertMember(m);
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+</body>
+</html>

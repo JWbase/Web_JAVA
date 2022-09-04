@@ -1,0 +1,11 @@
+package ko.or.iei.member.service;
+
+import ko.or.iei.member.vo.Member;
+
+public class MemberService {
+
+	public int insertMember(Member m) {
+		return 0;
+	}
+
+}

@@ -1,0 +1,5 @@
+package ko.or.iei.member.dao;
+
+public class MemberDao {
+
+}

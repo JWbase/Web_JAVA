@@ -1,0 +1,7 @@
+package kr.or.iei.member.controller;
+
+public class Snippet {
+	<input type="text" name="memberLevel" id="memberLevel"
+					class="input-form" value="관리자" readonly>
+}
+
