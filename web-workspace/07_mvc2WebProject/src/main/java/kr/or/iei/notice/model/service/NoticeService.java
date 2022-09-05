@@ -1,12 +1,15 @@
 package kr.or.iei.notice.model.service;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 import common.JDBCTemplate;
 import kr.or.iei.notice.model.dao.NoticeDao;
 import kr.or.iei.notice.model.vo.Notice;
+import kr.or.iei.notice.model.vo.NoticeComment;
 import kr.or.iei.notice.model.vo.NoticePageData;
+import kr.or.iei.notice.model.vo.NoticeViewData;
 
 public class NoticeService {
 	private NoticeDao dao;
@@ -102,14 +105,20 @@ public class NoticeService {
 		return result;
 	}
 
-	public Notice selectOneNotice(int noticeNo) {
+	public NoticeViewData selectOneNotice(int noticeNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.updateReadCount(conn, noticeNo);
 		if (result > 0) {
 			JDBCTemplate.commit(conn);
 			Notice n = dao.selectOneNotice(conn, noticeNo);
+			// 공지사항 상세내용 조회 후 해당 공지사항에 작성된 댓글도 모두 조회
+			// 1. 일반댓글 조회
+			ArrayList<NoticeComment> commentList = dao.selectNoticeCommentList(conn, noticeNo);
+			// 2. 대댓글 조회
+			ArrayList<NoticeComment> reCommentList = dao.selectNoticeRecommentList(conn, noticeNo);
+			NoticeViewData nvd = new NoticeViewData(n, commentList, reCommentList);
 			JDBCTemplate.close(conn);
-			return n;
+			return nvd;
 		} else {
 			JDBCTemplate.rollback(conn);
 			JDBCTemplate.close(conn);
@@ -141,6 +150,42 @@ public class NoticeService {
 	public int updateNotice(Notice n) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.updateNotice(conn, n);
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public int insertNoticeComment(NoticeComment nc) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.insertNoticeComment(conn, nc);
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public int updateNoticeComment(NoticeComment nc) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.updateNoticeComment(conn, nc);
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public int deleteNoticeComment(int ncNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.deleteNoticeComment(conn, ncNo);
 		if (result > 0) {
 			JDBCTemplate.commit(conn);
 		} else {
