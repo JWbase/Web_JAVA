@@ -1,0 +1,19 @@
+package kr.or.iei.photo.model.service;
+
+import kr.or.iei.photo.model.dao.PhotoDao;
+
+public class PhotoService {
+	private PhotoDao dao;
+
+	public PhotoService() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public PhotoService(PhotoDao dao) {
+		super();
+		this.dao = dao;
+	}
+	
+
+}

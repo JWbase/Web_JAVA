@@ -1,0 +1,18 @@
+package kr.or.iei.photo.model.service;
+
+import kr.or.iei.photo.model.dao.PhotoDao;
+
+public class PhotoService {
+	private PhotoDao dao;
+
+	public PhotoService() {
+		super();
+		dao = new PhotoDao();
+	}
+
+	public PhotoService(PhotoDao dao) {
+		super();
+		this.dao = dao;
+	}
+
+}

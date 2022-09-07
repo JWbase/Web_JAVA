@@ -1,0 +1,6 @@
+package kr.or.iei.photo.model.dao;
+
+public class PhotoDao {
+	private PhotoDao dao;
+
+}
