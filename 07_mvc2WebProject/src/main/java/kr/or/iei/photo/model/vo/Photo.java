@@ -1,62 +1,50 @@
 package kr.or.iei.photo.model.vo;
 
 public class Photo {
-	private int PhotoNo;
-	private String PhotoWriter;
-	private String PhotoTitle;
-	private String PhotoContent;
+	private int photoNo;
+	private String photoWriter;
+	private String photoTitle;
+	private String photoContent;
 	private String filepath;
-
 	public Photo() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
 	public Photo(int photoNo, String photoWriter, String photoTitle, String photoContent, String filepath) {
 		super();
-		PhotoNo = photoNo;
-		PhotoWriter = photoWriter;
-		PhotoTitle = photoTitle;
-		PhotoContent = photoContent;
+		this.photoNo = photoNo;
+		this.photoWriter = photoWriter;
+		this.photoTitle = photoTitle;
+		this.photoContent = photoContent;
 		this.filepath = filepath;
 	}
-
 	public int getPhotoNo() {
-		return PhotoNo;
+		return photoNo;
 	}
-
 	public void setPhotoNo(int photoNo) {
-		PhotoNo = photoNo;
+		this.photoNo = photoNo;
 	}
-
 	public String getPhotoWriter() {
-		return PhotoWriter;
+		return photoWriter;
 	}
-
 	public void setPhotoWriter(String photoWriter) {
-		PhotoWriter = photoWriter;
+		this.photoWriter = photoWriter;
 	}
-
 	public String getPhotoTitle() {
-		return PhotoTitle;
+		return photoTitle;
 	}
-
 	public void setPhotoTitle(String photoTitle) {
-		PhotoTitle = photoTitle;
+		this.photoTitle = photoTitle;
 	}
-
 	public String getPhotoContent() {
-		return PhotoContent;
+		return photoContent;
 	}
-
 	public void setPhotoContent(String photoContent) {
-		PhotoContent = photoContent;
+		this.photoContent = photoContent;
 	}
-
 	public String getFilepath() {
 		return filepath;
 	}
-
 	public void setFilepath(String filepath) {
 		this.filepath = filepath;
 	}

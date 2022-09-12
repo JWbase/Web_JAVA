@@ -28,7 +28,16 @@
 					<td><%=m.getMemberId()%> <input type="hidden"
 						name="photoWriter" value="<%=m.getMemberId()%>"></td>
 					<th class="td-2">이미지</th>
-					<td><input type="file" name="imageFile"></td>
+					<td><input type="file" name="imageFile"
+						accept=".jpg,.png,.jpeg" onchange="loadImg(this);"></td>
+				</tr>
+				<tr class="tr-1">
+					<th class="td-2">이미지 미리보기</th>
+					<td colspan="3">
+						<div id="img-viewer">
+							<img id="img-view" width="500px">
+						</div>
+					</td>
 				</tr>
 				<tr class="tr-1">
 					<th class="td-2">내용</th>
@@ -43,6 +52,21 @@
 			</table>
 		</form>
 	</div>
+	<script>
+		function loadImg(f) {
+			// 첨부파일이 여러개 일 수 있으므로 항상 배열처리
+			if (f.files.length != 0 && f.files[0] != 0) {
+				const reader = new FileReader(); // 파일정보를 읽어올 수 있는 객체
+				reader.readAsDataURL(f.files[0]); // 선택한 파일 정보 읽어옴
+				// 파일리더가 파일을 다 읽어오면 동작할 함수 작성
+				reader.onload = function(e) {
+					$("#img-view").attr("src",e.target.result);
+				}
+			} else {
+				$("#img-view").attr("src","");
+			}
+		}
+	</script>
 	<%@include file="/WEB-INF/views/common/footer.jsp"%>
 </body>
 </html>
