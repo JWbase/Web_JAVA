@@ -1,7 +1,0 @@
-package kr.or.iei.photo.model.vo;
-
-public class Photo {
-	private int PhotoNo;
-	private String PhotoWriter;
-
-}
