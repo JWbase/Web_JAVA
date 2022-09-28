@@ -1,13 +1,6 @@
-<%@page import="kr.or.iei.notice.model.vo.NoticeComment"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="kr.or.iei.notice.model.vo.Notice"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
-Notice n = (Notice) request.getAttribute("n");
-ArrayList<NoticeComment> commentList = (ArrayList<NoticeComment>) request.getAttribute("commentList");
-ArrayList<NoticeComment> reCommentList = (ArrayList<NoticeComment>) request.getAttribute("reCommentList");
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -95,165 +88,51 @@ ArrayList<NoticeComment> reCommentList = (ArrayList<NoticeComment>) request.getA
 </style>
 </head>
 <body>
-	<%@include file="/WEB-INF/views/common/header.jsp"%>
+	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 	<div class="page-content">
 		<div class="page-title">공지사항</div>
 		<table class="tbl" id="noticeView">
 			<tr class="tr-3">
-				<th colspan="6"><%=n.getNoticeTitle()%></th>
+				<th colspan="6">${n.noticeTitle }</th>
 			</tr>
 			<tr class="tr-1">
 				<th class="td-3">작성자</th>
-				<td><%=n.getNoticeWriter()%></td>
+				<td>${n.noticeWriter }</td>
 				<th class="td-3">조회수</th>
-				<td><%=n.getReadCount()%></td>
+				<td>${n.readCount }</td>
 				<th class="td-3">작성일</th>
-				<td><%=n.getRegDate()%></td>
+				<td>${n.regDate }</td>
 			</tr>
 			<tr class="tr-1">
 				<th class="td-3">첨부파일</th>
-				<td colspan="5">
-					<%
-					if (n.getFilename() != null) {
-					%> <img src="/img/file.png" width="16px"> <a
-					href="/noticeFileDown.do?noticeNo=<%=n.getNoticeNo()%>"><%=n.getFilename()%></a>
-					<%
-					}
-					%>
-				</td>
+				<td colspan="5"><c:if test="${not empty n.filename }">
+						<img src="/img/file.png" width="16px">
+						<a href="/noticeFileDown.do?noticeNo=${n.noticeNo }">${n.filename }</a>
+					</c:if></td>
 			</tr>
 			<tr>
 				<td colspan="6">
-					<div id="noticeContent">
-						<%=n.getNoticeContentBr()%>
-					</div>
+					<div id="noticeContent">${n.noticeContentBr }</div>
 				</td>
 			</tr>
-			<%
-			if (m != null && n.getNoticeWriter().equals(m.getMemberId())) {
-			%>
-			<tr class="tr-1">
-				<th colspan="6"><a class="btn bc44"
-					href="/noticeUpdateFrm.do?noticeNo=<%=n.getNoticeNo()%>">수정</a>
-					<button class="btn bc44"
-						onclick="noticeDelete(<%=n.getNoticeNo()%>);">삭제</button></th>
-			</tr>
-			<%
-			}
-			%>
+			<c:if
+				test="${not empty m && n.noticeWriter eq sessionScope.m.memberId }">
+				<tr class="tr-1">
+					<th colspan="6"><a class="btn bc44"
+						href="/noticeUpdateFrm.do?noticeNo=${n.noticeNo }">수정</a>
+						<button class="btn bc44" onclick="noticeDelete(${n.noticeNo});">삭제</button></th>
+				</tr>
+			</c:if>
 		</table>
-		<%
-		if (m != null) {
-		%>
-		<div class="inputCommentBox">
-			<form action="/insertComment.do" method="post">
-				<ul>
-					<li><span class="material-icons">account_box</span></li>
-					<li><input type="hidden" name="ncWriter"
-						value="<%=m.getMemberId()%>"> <input type="hidden"
-						name="noticeRef" value="<%=n.getNoticeNo()%>"> <input
-						type="hidden" name="ncRef" value="0"> <textarea
-							class="input-form" name="ncContent"></textarea></li>
-					<li>
-						<button type="submit" class="btn bc1 bs4">등록</button>
-					</li>
-				</ul>
-			</form>
-		</div>
-		<%
-		}
-		%>
-		<div class="commentBox">
-			<%
-			for (NoticeComment nc : commentList) {
-			%>
-			<ul class="posting-comment">
-				<li><span class="material-icons">account_box</span></li>
-				<li>
-					<p class="comment-info">
-						<span><%=nc.getNcWriter()%></span> <span><%=nc.getNcDate()%></span>
-					</p>
-					<p class="comment-content"><%=nc.getNcContent()%></p> <textarea
-						name="ncContent" class="input-form"
-						style="min-height: 96px; display: none;"><%=nc.getNcContent()%></textarea>
-					<p class="comment-link">
-						<%
-						if (m != null) {
-						%>
-						<%
-						if (m.getMemberId().equals(nc.getNcWriter()) || m.getMemberLevel() == 1) {
-						%>
-						<a href="javascript:void(0)"
-							onclick="modifyComment(this,<%=nc.getNcNo()%>,<%=n.getNoticeNo()%>);">수정</a>
-						<a href="javascript:void(0)"
-							onclick="deleteComment(this,<%=nc.getNcNo()%>,<%=n.getNoticeNo()%>);">삭제</a>
-						<%
-						}
-						%>
-						<a href="javascript:void(0)" class="recShow">답글</a>
-						<%
-						} // 답글조건 if문(로그인체크)
-						%>
-					</p>
-				</li>
-			</ul>
-
-			<%
-			for (NoticeComment ncc : reCommentList) {
-			%>
-			<%
-			if (ncc.getNcRef() == nc.getNcNo()) {
-			%>
-			<ul class="posting-comment reply">
-				<li><span class="material-icons">subdirectory_arrow_right</span>
-					<span class="material-icons">account_box</span></li>
-				<li>
-					<p class="comment-info">
-						<span><%=ncc.getNcWriter()%></span> <span><%=ncc.getNcDate()%></span>
-					</p>
-					<p class="comment-content"><%=ncc.getNcContent()%></p> <textarea
-						name="ncContent" class="input-form"
-						style="min-height: 96px; display: none;"><%=ncc.getNcContent()%></textarea>
-					<p class="comment-link">
-						<%
-						if (m != null) {
-						%>
-						<%
-						if (m.getMemberId().equals(nc.getNcWriter()) || m.getMemberLevel() == 1) {
-						%>
-						<a href="javascript:void(0)"
-							onclick="modifyComment(this,<%=ncc.getNcNo()%>,<%=n.getNoticeNo()%>);">수정</a>
-						<a href="javascript:void(0)"
-							onclick="deleteComment(this,<%=ncc.getNcNo()%>,<%=n.getNoticeNo()%>);">삭제</a>
-						<%
-						}
-						%>
-						<%
-						} // 답글조건 if문(로그인체크)
-						%>
-					</p>
-				</li>
-			</ul>
-			<%
-			} // 해당 댓글의 대댓글인지 체크하는 if문 종료
-			%>
-			<%
-			} // 대댓글 출력 for문 종료
-			%>
-
-
-			<%
-			if (m != null) {
-			%>
-			<div class="inputRecommentBox">
+		<c:if test="${not empty m }">
+			<div class="inputCommentBox">
 				<form action="/insertComment.do" method="post">
 					<ul>
-						<li><span class="material-icons">subdirectory_arrow_right</span>
-						</li>
+						<li><span class="material-icons">account_box</span></li>
 						<li><input type="hidden" name="ncWriter"
-							value="<%=m.getMemberId()%>"> <input type="hidden"
-							name="noticeRef" value="<%=n.getNoticeNo()%>"> <input
-							type="hidden" name="ncRef" value="<%=nc.getNcNo()%>"> <textarea
+							value="${sessionScope.m.memberId }"> <input type="hidden"
+							name="noticeRef" value="${n.noticeNo }"> <input
+							type="hidden" name="ncRef" value="0"> <textarea
 								class="input-form" name="ncContent"></textarea></li>
 						<li>
 							<button type="submit" class="btn bc1 bs4">등록</button>
@@ -261,12 +140,84 @@ ArrayList<NoticeComment> reCommentList = (ArrayList<NoticeComment>) request.getA
 					</ul>
 				</form>
 			</div>
-			<%
-			} // 답글달기 form 조건문
-			%>
-			<%
-			} // 댓글종료 반복문 종료
-			%>
+		</c:if>
+		<div class="commentBox">
+			<c:forEach items="${commentList }" var="nc">
+				<ul class="posting-comment">
+					<li><span class="material-icons">account_box</span></li>
+					<li>
+						<p class="comment-info">
+							<span>${nc.ncWriter }</span> <span>${nc.ncDate }</span>
+						</p>
+						<p class="comment-content">${nc.ncContent }</p> <textarea
+							name="ncContent" class="input-form"
+							style="min-height: 96px; display: none;">${nc.ncContent }</textarea>
+						<p class="comment-link">
+							<c:if test="${not empty m }">
+								<c:if
+									test="${sessionScope.m.memberId eq nc.ncWriter || sessionScope.m.memberLevel eq 1 }">
+									<a href="javascript:void(0)"
+										onclick="modifyComment(this,${nc.ncNo },${n.noticeNo});">수정</a>
+									<a href="javascript:void(0)"
+										onclick="deleteComment(this,${nc.ncNo },${n.noticeNo});">삭제</a>
+								</c:if>
+								<a href="javascript:void(0)" class="recShow">답글</a>
+							</c:if>
+						</p>
+					</li>
+				</ul>
+
+				<c:forEach items="${reCommentList}" var="ncc">
+
+					<c:if test="${ncc.ncRef eq nc.ncNo }">
+						<ul class="posting-comment reply">
+							<li><span class="material-icons">subdirectory_arrow_right</span>
+								<span class="material-icons">account_box</span></li>
+							<li>
+								<p class="comment-info">
+									<span>${nc.ncWriter }</span> <span>${ncc.ncDate }</span>
+								</p>
+								<p class="comment-content">${ncc.ncContent }</p> <textarea
+									name="ncContent" class="input-form"
+									style="min-height: 96px; display: none;">${ncc.ncContent }</textarea>
+								<p class="comment-link">
+
+									<c:if test="${not empty m}">
+										<c:if
+											test="${sessionScope.m.memberId eq nc.ncWriter || sessionScope.m.memberLevel eq 1}">
+											<a href="javascript:void(0)"
+												onclick="modifyComment(this,${ncc.ncNo },${n.noticeNo });">수정</a>
+											<a href="javascript:void(0)"
+												onclick="deleteComment(this,${ncc.ncNo },${n.noticeNo });">삭제</a>
+										</c:if>
+									</c:if>
+								</p>
+							</li>
+						</ul>
+					</c:if>
+				</c:forEach>
+
+
+				<c:if test="${not empty sessionScope.m }">
+					<div class="inputRecommentBox">
+						<form action="/insertComment.do" method="post">
+							<ul>
+								<li><span class="material-icons">subdirectory_arrow_right</span>
+								</li>
+								<li><input type="hidden" name="ncWriter"
+									value="${sessionScope.m.memberId }"> <input
+									type="hidden" name="noticeRef" value="${n.noticeNo }">
+									<input type="hidden" name="ncRef" value="${nc.ncNo }">
+									<textarea class="input-form" name="ncContent"></textarea></li>
+								<li>
+									<button type="submit" class="btn bc1 bs4">등록</button>
+								</li>
+							</ul>
+						</form>
+					</div>
+				</c:if>
+			</c:forEach>
+
 		</div>
 	</div>
 	<script>

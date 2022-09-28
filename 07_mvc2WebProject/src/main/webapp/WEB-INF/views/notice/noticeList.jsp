@@ -1,11 +1,6 @@
-<%@page import="kr.or.iei.notice.model.vo.Notice"%>
-<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
-ArrayList<Notice> list = (ArrayList<Notice>) request.getAttribute("list");
-String pageNavi = (String) request.getAttribute("pageNavi");
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,16 +25,15 @@ String pageNavi = (String) request.getAttribute("pageNavi");
 </style>
 </head>
 <body>
-	<%@include file="/WEB-INF/views/common/header.jsp"%>
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+
 	<div class="page-content">
 		<div class="page-title">공지사항</div>
-		<%
-		if (m != null && m.getMemberLevel() == 1) {
-		%>
-		<a class="btn bc4 writeBtn" href="/noticeWriteFrm.do">글쓰기</a>
-		<%
-		}
-		%>
+
+		<c:if test="${not empty sessionScope.m && sessionScope.m.memberLevel eq 1 }">
+			<a class="btn bc4 writeBtn" href="/noticeWriteFrm.do">글쓰기</a>
+		</c:if>	
+
 		<table class="tbl tbl-hover notice-tbl">
 			<tr class="tr-2">
 				<th style="width: 10%;">번호</th>
@@ -48,20 +42,18 @@ String pageNavi = (String) request.getAttribute("pageNavi");
 				<th style="width: 20%;">작성일</th>
 				<th style="width: 10%;">조회수</th>
 			</tr>
-			<%
-			for (Notice n : list) {
-			%>
-			<tr class="tr-1">
-				<td><%=n.getNoticeNo()%></td>
-				<td><a href="/noticeView.do?noticeNo=<%=n.getNoticeNo()%>"><%=n.getNoticeTitle()%></a></td>
-				<td><%=n.getNoticeWriter()%></td>
-				<td><%=n.getRegDate()%></td>
-				<td><%=n.getReadCount()%></td>
-			</tr>
-			<%} %>
+			<c:forEach items="${list }" var="n">
+				<tr class="tr-1">
+					<td>${n.noticeNo }</td>
+					<td><a href="/noticeView.do?noticeNo=${n.noticeNo }">${n.noticeTitle }</a></td>
+					<td>${n.noticeWriter }</td>
+					<td>${n.regDate }</td>
+					<td>${n.readCount }</td>
+				</tr>
+			</c:forEach>
 		</table>
-		<div id="pageNavi"><%=pageNavi%></div>
+		<div id="pageNavi">${pageNavi }</div>
 	</div>
-	<%@include file="/WEB-INF/views/common/footer.jsp"%>
+	<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
 </body>
 </html>
